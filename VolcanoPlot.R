@@ -1,19 +1,29 @@
-#VolcanoPlot by NachoGarcia
-#ignacio.garcia.llorente@rr-research.no
+#VolcanoPlot by Nacho Garcia
+#2016
+#garcia.nacho@gmail.com
+
+#This script allows to represent mass-spectrometry data using a volcano plot  
+
+library(calibrate)
 
 
 #Defining cutoffs and genes
-pCO=.5
-diffCO=0.65
-GoI <- c("")
-GoNI<- c("DEF1","ESP1","RPN8","UTP1","TRI1","ESP1","ECM33","NHP2","UTP11","LSP1","RPL13A","UBC1")
+#pCO = pValue cuttoff
+#diffCO = difference cutoff (log)
+#GoI = list of genes of insterest to be identifed even though they don't reach the cutoffs
+#GoNI = list of genes of No interest to be suppresed of the plot even though they reach the cutoff (noise genes)
+#nGoI = number of genes of interest 
 
-nGoI=4
+pCO=.5
+diffCO=0.5
+GoI <- c("GEN1","GEN2")
+GoNI<- c("GEN3","GEN4")
+
 
 
 #Reading the file
 i=0
-res <- read.table("Kel1-9myc minus vs plus alpha.txt", header=TRUE)
+res <- read.table("Example.txt", header=TRUE)
 head(res)
 
 # Drawing the plot
@@ -26,15 +36,15 @@ with(res, plot(difference, -log10(pvalue), pch=19, main="Volcano plot", xlim=c(-
 with(subset(res, pvalue<pCO & abs(difference)>diffCO), points(difference, -log10(pvalue), pch=20, col="green"))
 
 # Labeling points
-library(calibrate)
+
 #print (subset(res, pvalue<pCO & abs(difference)>diffCO))
 #with (subset(res, pvalue<pCO & difference>diffCO), textxy(difference, -log10(pvalue), labs=Gene, cex=.8))
 
 res<-res[!res$Gene %in% GoNI,]
 with (subset(res, pvalue<pCO & abs(difference)>diffCO), textxy(difference, -log10(pvalue), labs=Gene, cex=.8))
 
-#Uncomment next line to get GoI
 
-for (i in 1:nGoI){
+
+for (i in 1:length(GoI){
 with(subset(res, Gene==GoI[i]), points(difference, -log10(pvalue), pch=4, col="blue"))
 with(subset(res, Gene==GoI[i]), textxy(difference, -log10(pvalue), labs=Gene, cex=.8, col="blue"))}
