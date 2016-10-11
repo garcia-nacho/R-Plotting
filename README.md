@@ -1,5 +1,6 @@
 # R-Plotting
-Scripts to plot bioinformatical data
+Scripts to plot bioinformatical data:
+
 VolcanoPlot.R
 
 This script can generate volcano plots from high throughput data such as protein interactions (obtained by MS) or gene expression (obtain by RNA seq). 
